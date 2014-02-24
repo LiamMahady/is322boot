@@ -104,6 +104,17 @@ function DragView(target)
 
     }
 
+  this.OnDragEnd=function(event)
+    {this.drag=[];
+    var touches=[event];
+    for(var t=0;t<touches.length;t++)
+      {var el=touches[t].target.parentNode;
+      if(el.className.search('polaroid')>-1)
+        {el=touches[t].target.parentNode.parentNode;
+        }
+      $(el).children().toggleClass('upSky');
+      }
+    }
   }
 function ZoomView(container, element)
   {container=$(container).hammer    
@@ -123,7 +134,7 @@ function ZoomView(container, element)
 
   container.bind("drag",$.proxy(dragview.OnDrag,dragview));
 
-  /*container.bind("dragend",$.proxy(dragview.OnDragEnd,dragview));*/
+  container.bind("dragend",$.proxy(dragview.OnDragEnd,dragview));
 
   setInterval($.proxy(dragview.WatchDrag,dragview),10);
 
