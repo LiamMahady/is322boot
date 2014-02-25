@@ -141,8 +141,8 @@ function ZoomView(container, element)
       {//We save the initial midpoint of the first two touches to
           //say where our transform origin is.
       e=event
-      tch1=[e.touches[0].x,e.touches[0].y],
-      tch2=[e.touches[1].x,e.touches[1].y]
+      tch1=[e.gesture.touches[0].pageX,e.gesture.touches[0].pageY],
+      tch2=[e.gesture.touches[1].pageX,e.gesture.touches[1].pageY]
       tcX=(tch1[0]+tch2[0])/2,
       tcY=(tch1[1]+tch2[1])/2
       toX=tcX
@@ -155,7 +155,7 @@ function ZoomView(container, element)
   container.bind
     ("transform",
     function(event)
-      {scaleFactor=previousScaleFactor*event.scale;
+      {scaleFactor=previousScaleFactor*event.gesture.scale;
       scaleFactor=Math.max(MIN_ZOOM,Math.min(scaleFactor,MAX_ZOOM));
       transform(event);
       }
@@ -177,7 +177,7 @@ function ZoomView(container, element)
 
   function transform(e)
     {//We're going to scale the X and Y coordinates by the same amount
-    var cssScale="scaleX("+scaleFactor+") scaleY("+scaleFactor+")rotateZ("+e.rotation +"deg)";
+    var cssScale="scaleX("+scaleFactor+") scaleY("+scaleFactor+")rotateZ("+e.gesture.rotation +"deg)";
     element.css
       ({webkitTransform:cssScale,
       webkitTransformOrigin:cssOrigin,
