@@ -28,9 +28,9 @@ function DragView(target)
 
       var top=$(this.drag[d].el).offset().top;
 
-      var x_offset=-(this.lastDrag.pos.x-this.drag[d].pos.x);
+      var x_offset=-(this.lastDrag.pos.pageX-this.drag[d].pos.pageX);
 
-      var y_offset=-(this.lastDrag.pos.y-this.drag[d].pos.y);
+      var y_offset=-(this.lastDrag.pos.pageY-this.drag[d].pos.pageY);
 
       left=left+x_offset;
 
@@ -48,7 +48,7 @@ function DragView(target)
 
   this.OnDragStart=function(event)
 
-    {var touches=[event];
+    {var touches=event.gesture.touches||[event.gesture];
 
     for(var t=0; t<touches.length;t++)
 
@@ -68,7 +68,7 @@ function DragView(target)
 
         {$(el).children().toggleClass('upSky');
 
-        this.lastDrag={el:el,pos:event[t]};
+        this.lastDrag={el:el,pos:event.gesture.touches[t]};
 
         return;
 
@@ -82,11 +82,11 @@ function DragView(target)
 
     {this.drag=[];
 
-    var touches=[event];
+    var touches=event.gesture.touches||[event.gesture];
 
     for(var t=0; t<touches.length;t++)
 
-      {var el=touches[t].target.parentNode.parentNode;
+      {var el=touches[t].target.parentNode;
 
       if(el.className.search('polaroid')>-1)
 
@@ -96,7 +96,7 @@ function DragView(target)
 
       if(el&&el==this.target)
 
-        {this.drag.push({el:el,pos:event[t]});
+        {this.drag.push({el:el,pos:event.gesture.touches[t]});
 
         }
 
@@ -106,7 +106,7 @@ function DragView(target)
 
   this.OnDragEnd=function(event)
     {this.drag=[];
-    var touches=[event];
+    var touches=event.gesture.touches||[event.gesture];
     for(var t=0;t<touches.length;t++)
       {var el=touches[t].target.parentNode;
       if(el.className.search('polaroid')>-1)
@@ -123,6 +123,11 @@ function ZoomView(container, element)
     drag_min_distance:0});
 
   element=$(element);
+  //These two constants specify the minimum and maximum zoom
+  var MIN_ZOOM=1;
+  var MAX_ZOOM=3;
+  var scaleFactor=1;
+  var previousScaleFactor=1;
 
   //These two variables keep track of the finger when it first
   //the screen
@@ -130,6 +135,38 @@ function ZoomView(container, element)
   var startY=0;
   var dragview=new DragView($(container));
 
+  container.bind
+    ("transformstart",
+    function(event)
+      {//We save the initial midpoint of the first two touches to
+          //say where our transform origin is.
+      e=event
+      tch1=[e.touches[0].x,e.touches[0].y],
+      tch2=[e.touches[1].x,e.touches[1].y]
+      tcX=(tch1[0]+tch2[0])/2,
+      tcY=(tch1[1]+tch2[1])/2
+      toX=tcX
+      toY=tcY
+      var left=$(element).offset().left;
+      var top=$(element).offset().top;
+      cssOrigin=(-(left)+toX)/scaleFactor+"px "+(-(top)+toY)/scaleFactor+"px";
+      }
+    )
+  container.bind
+    ("transform",
+    function(event)
+      {scaleFactor=previousScaleFactor*event.scale;
+      scaleFactor=Math.max(MIN_ZOOM,Math.min(scaleFactor,MAX_ZOOM));
+      transform(event);
+      }
+    );
+  container.bind
+    ("transformend",
+    function(event)
+      {previousScaleFactor=scaleFactor;
+      }
+    );
+  //on drag    
   container.bind("dragstart",$.proxy(dragview.OnDragStart,dragview));
 
   container.bind("drag",$.proxy(dragview.OnDrag,dragview));
@@ -138,4 +175,14 @@ function ZoomView(container, element)
 
   setInterval($.proxy(dragview.WatchDrag,dragview),10);
 
+  function transform(e)
+    {//We're going to scale the X and Y coordinates by the same amount
+    var cssScale="scaleX("+scaleFactor+") scaleY("+scaleFactor+")rotateZ("+e.rotation +"deg)";
+    element.css
+      ({webkitTransform:cssScale,
+      webkitTransformOrigin:cssOrigin,
+      transform:cssScale,
+      transformOrigin:cssOrigin,
+      });
+    }
   }
