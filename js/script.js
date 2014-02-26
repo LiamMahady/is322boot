@@ -2,19 +2,23 @@ $(function()
   {var zoom=new ZoomView('#zoom','#zoom :first');
   var zoom2=new ZoomView('#zoom2','#zoom2 :first');
   var zoom3=new ZoomView('#zoom3','#zoom3 :first');
-  var carousel=$('#myCarousel').hammer({prevent_default:true});
+  var carousel1=new swipable('#carousel1');
+  var myCarousel=new swipable('#myCarousel');
+  }
+ );
+function swipable(carousel)
+  {carousel=$(carousel).hammer({prevent_default:true});
   carousel.bind
     ('swipeleft', function(event)
       {carousel.carousel('next');
       }
     );
   carousel.bind
-    ('swiperight',function(event)
+    ('swiperight', function(event)
       {carousel.carousel('prev');
       }
     );
   }
- );
 var zIndexBackup=10;
 
 function DragView(target)
