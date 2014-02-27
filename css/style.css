@@ -34,3 +34,8 @@ h1
   {background-color:#FFFFFF;
   border:1px solid #999999;
   }
+#opDisplay
+  {width:40%;
+  text-align:center;
+  text-size:200%;
+  }
