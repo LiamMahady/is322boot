@@ -18,6 +18,7 @@ $(function()
   var opMinus=new swipeOp('#opMinus','-');
   var opMult=new swipeOp('#opMult','x');
   var opDiv=new swipeOp('#opDiv','/');
+  var calculate=new swipeCalc('#calculate');
   }
  );
 function swipeDigit(digit, value)
@@ -38,6 +39,27 @@ function swipeOp(op, value)
   op.bind
     ('swipedown', function(event)
       {$('#opDisplay').text(value);
+      }
+    );
+  }
+function swipeCalc(ident)
+  {ident=$(ident).hammer({prevent_default:true});
+  ident.bind
+    ('swipedown', function(event)
+      {alert('Calculating');
+      var left=$('#leftOp').text();
+      alert(left);
+      var right=$('#rightOp').text();
+      alert(right);
+      var out;
+      switch ($('#opDisplay').text())
+        {case '+': out=left+right; break;
+        case '-': out=left-right; break;
+        case 'x': out=left*right; break;
+        case '/': out=left/right;
+        }
+     alert(out);
+     $('#result').text(out);
       }
     );
   }
