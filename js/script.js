@@ -48,6 +48,8 @@ function swipeCalc(ident)
     ('swipedown', function(event)
       {var left=parseInt($('#leftOp').text());
       var right=parseInt($('#rightOp').text());
+      $('#leftOp').text("");
+      $('#rightOp').text("");
       var out;
       switch ($('#opDisplay').text())
         {case '+': out=left+right; break;
