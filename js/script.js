@@ -43,16 +43,28 @@ function swipeCalc(ident)
     ('swipedown', function(event)
       {var left=parseInt($('#leftOp').text());
       var right=parseInt($('#rightOp').text());
-      $('#leftOp').text("");
-      $('#rightOp').text("");
       var out;
-      switch ($('#opDisplay').text())
+      var op=$('#opDisplay').text();
+      switch (op)
         {case '+': out=left+right; break;
         case '-': out=left-right; break;
         case 'x': out=left*right; break;
-        case '/': out=left/right;
+        case '/': out=left/right; break;
+        default: out='no Op';
         }
-     $('#result').text(out);
+      if (out=='no Op')
+          {$('#result').text("Please swipe an operator down");
+          }
+      else
+        {if (out+""!='NaN')
+          {$('#leftOp').text("");
+          $('#rightOp').text("");
+          $('#result').text(left+" "+op+" "+right+" "+"="+out);
+          }
+        else
+          {$('#result').text("Please swipe numbers onto both sides");
+          }
+        }
       }
     );
   }
