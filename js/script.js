@@ -17,7 +17,7 @@ $(function()
   }
  );
 function swipeDigit(digit, value)
-  {digit=$(digit).hammer({prevent_default:true});
+  {digit=$(digit).hammer({prevent_default:true, swipe_velocity:0.3});
   digit.bind
     ('swipeleft', function(event)
       {$('#leftOp').append(value);
@@ -30,7 +30,7 @@ function swipeDigit(digit, value)
     );
   }
 function swipeOp(op, value)
-  {op=$(op).hammer({prevent_default:true});
+  {op=$(op).hammer({prevent_default:true, swipe_velocity:0.3});
   op.bind
     ('swipedown', function(event)
       {$('#opDisplay').text(value);
@@ -38,7 +38,7 @@ function swipeOp(op, value)
     );
   }
 function swipeCalc(ident)
-  {ident=$(ident).hammer({prevent_default:true});
+  {ident=$(ident).hammer({prevent_default:true, swipe_velocity:0.3});
   ident.bind
     ('swipedown', function(event)
       {var left=parseInt($('#leftOp').text());
