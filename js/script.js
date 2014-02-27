@@ -46,11 +46,8 @@ function swipeCalc(ident)
   {ident=$(ident).hammer({prevent_default:true});
   ident.bind
     ('swipedown', function(event)
-      {alert('Calculating');
-      var left=$('#leftOp').text();
-      alert(left);
-      var right=$('#rightOp').text();
-      alert(right);
+      {var left=parseInt($('#leftOp').text());
+      var right=parseInt($('#rightOp').text());
       var out;
       switch ($('#opDisplay').text())
         {case '+': out=left+right; break;
@@ -58,7 +55,6 @@ function swipeCalc(ident)
         case 'x': out=left*right; break;
         case '/': out=left/right;
         }
-     alert(out);
      $('#result').text(out);
       }
     );
