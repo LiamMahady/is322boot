@@ -29,15 +29,18 @@ h1
 .digitBox
   {background-color:#FFFFFF;
   border:1px solid #999999;
+  padding-top:20px;
+  padding-bottom:20px;
   }
 .opBox
   {background-color:#FFFFFF;
   border:1px solid #999999;
+  padding-top:20px;
+  padding-top:20px;
   }
 #opDisplay
   {width:40%;
   text-align:center;
-  text-size:200%;
   }
 #calculate
   {width:33%;
