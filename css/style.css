@@ -21,7 +21,16 @@ h1
 #numPanel
   {
   }
+#opPanel
+  {width:50%;
+  margin-right:auto;
+  margin-left:auto;
+  }
 .digitBox
+  {background-color:#FFFFFF;
+  border:1px solid #999999;
+  }
+.opBox
   {background-color:#FFFFFF;
   border:1px solid #999999;
   }
